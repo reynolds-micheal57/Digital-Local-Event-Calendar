@@ -111,7 +111,7 @@
   (let
     (
       (event-id (var-get next-event-id))
-      (current-block (stacks-block-height))
+      (current-block stacks-block-height)
       (user-event-count (get-user-event-count tx-sender))
     )
 
@@ -129,7 +129,7 @@
       interval (begin
         (asserts! (> interval u0) ERR-INVALID-PARAMS)
         (match recurring-end
-          end-time (asserts! (> end-time start-time) ERR-INVALID-TIME)
+          recurring-end-time (asserts! (> recurring-end-time start-time) ERR-INVALID-TIME)
           true
         )
       )
@@ -187,7 +187,7 @@
   (let
     (
       (event (unwrap! (map-get? events { event-id: event-id }) ERR-EVENT-NOT-FOUND))
-      (current-block (stacks-block-height))
+      (current-block stacks-block-height)
       (existing-rsvp (map-get? rsvps { event-id: event-id, attendee: tx-sender }))
     )
 
@@ -263,7 +263,7 @@
   (let
     (
       (event (unwrap! (map-get? events { event-id: event-id }) ERR-EVENT-NOT-FOUND))
-      (current-block (stacks-block-height))
+      (current-block stacks-block-height)
     )
 
     ;; Authorization check
@@ -310,7 +310,7 @@
       { event-id: event-id }
       (merge event {
         is-active: false,
-        updated-at: (stacks-block-height)
+        updated-at: stacks-block-height
       })
     )
 
@@ -338,7 +338,7 @@
         email-notifications: email-notifications,
         categories-of-interest: categories-of-interest,
         timezone-offset: timezone-offset,
-        created-at: (stacks-block-height)
+        created-at: stacks-block-height
       }
     )
 
@@ -649,7 +649,7 @@
 )
   (let
     (
-      (current-block (stacks-block-height))
+      (current-block stacks-block-height)
     )
 
     ;; Validation
@@ -695,7 +695,7 @@
         keywords: keywords,
         notification-types: notification-types,
         is-active: is-active,
-        updated-at: (stacks-block-height)
+        updated-at: stacks-block-height
       })
     )
 
@@ -717,7 +717,7 @@
 
     ;; Validation
     (asserts! (is-eq tx-sender (get creator event)) ERR-UNAUTHORIZED)
-    (asserts! (> reminder-time (stacks-block-height)) ERR-INVALID-TIME)
+    (asserts! (> reminder-time stacks-block-height) ERR-INVALID-TIME)
     (asserts! (< reminder-time (get start-time event)) ERR-INVALID-TIME)
 
     (map-set event-reminders
@@ -726,7 +726,7 @@
         reminder-type: reminder-type,
         recipients: attendee-list,
         is-sent: false,
-        created-at: (stacks-block-height)
+        created-at: stacks-block-height
       }
     )
 
@@ -815,7 +815,7 @@
         events-created: (if (is-eq history-type "created") (+ (get events-created current-history) u1) (get events-created current-history)),
         events-attended: (if (is-eq history-type "attended") (+ (get events-attended current-history) u1) (get events-attended current-history)),
         events-rsvped: (if (is-eq history-type "rsvped") (+ (get events-rsvped current-history) u1) (get events-rsvped current-history)),
-        last-activity: (stacks-block-height)
+        last-activity: stacks-block-height
       })
     )
 
